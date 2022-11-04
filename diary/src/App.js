@@ -1,9 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import './App.css';
 import DiaryEditor from './DiaryEditor';
 import DiaryList from './DiaryList';
-
-/** https://jsonplaceholder.typicode.com/comments을 통해서 API 값 호출하여 활용 */
 
 const App = () => {
 
@@ -11,6 +9,9 @@ const App = () => {
 
   const dataId = useRef(0);
 
+  /**
+   * https://jsonplaceholder.typicode.com/comments을 통해서 API 값 호출하여 활용한다.
+   */
   const getData = async ()=>{
     const res = await fetch(
       'https://jsonplaceholder.typicode.com/comments'
@@ -36,18 +37,25 @@ const App = () => {
     getData();
   }, []);
 
-  const onCreate = (author, content, emotion) =>{
-    const created_date = new Date().getTime();
-    const newItem ={
-      author,
-      content,
-      emotion,
-      created_date,
-      id : dataId.current,
-    };
-    dataId.current +=1;
-    setData([newItem, ...data]);
-  }
+  /**
+   * 값 호출될 때 렌더링에 대한 최적화 개념
+   * 함수를 반환할 때 사용한다.
+   */
+  const onCreate = useCallback(
+    (author, content, emotion) =>{
+      const created_date = new Date().getTime();
+      const newItem ={
+        author,
+        content,
+        emotion,
+        created_date,
+        id : dataId.current,
+      };
+      dataId.current +=1;
+      setData((data)=>[newItem, ...data]);
+    },
+    []
+  );
 
   const onRemove = (targetId) =>{
     console.log(`${targetId}가 삭제되었습니다`);
@@ -66,6 +74,8 @@ const App = () => {
    * 1. 좋은 일기를 분석한다. 좋은 일기의 기준은 3이상이 좋은 일기이다.
    * 2. 나쁜 일기는 전체 데이터 길이에서 좋은 일기 기준을 제외한 것들이 나쁜 일기의 기준이다.
    * 3. 좋은 비율은 좋은 일기를 데이터 길이로 나눠준 후 100을 곱한다.
+   * 
+   * useMemo는 함수를 반환하는 것이 아닌 값을 반환한다.
    */
 
   const getDiaryAnalysis = useMemo(() =>{
