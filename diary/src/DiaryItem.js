@@ -1,8 +1,13 @@
-import {useState, useRef} from 'react';
+import React, { useEffect, useState, useRef} from 'react';
 
 const DiaryItem = ({
   onEdit,
   onRemove, author, content, created_date, emotion, id}) =>{
+
+    // 추가 됐을 때 값을 렌더하기 위함.
+    useEffect(()=>{
+      console.log(`${id}번 째 아이템 렌더!`)
+    })
 
   const [isEdit, setIsEdit] = useState(false);
   const toggleIsEdit = () => setIsEdit(!isEdit);
@@ -71,4 +76,4 @@ const DiaryItem = ({
   );
 };
 
-export default DiaryItem;
+export default React.memo(DiaryItem);

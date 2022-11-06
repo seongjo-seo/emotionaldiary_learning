@@ -57,17 +57,16 @@ const App = () => {
     []
   );
 
-  const onRemove = (targetId) =>{
-    console.log(`${targetId}가 삭제되었습니다`);
-    const newDiaryList = data.filter((it) => it.id !== targetId);
-    setData(newDiaryList);
-  };
+  const onRemove = useCallback((targetId) =>{
+    setData(data.filter((it) => it.id !== targetId));
+  },[]);
 
-  const onEdit = (targetId, newContent) =>{
-    setData(
-      data.map((it)=>it.id === targetId ? {...it, content:newContent}: it)
+  const onEdit = useCallback((targetId, newContent) =>{
+    setData((data)=>
+      data.map((it)=>
+        it.id === targetId ? {...it, content:newContent}: it)
     );
-  };
+  },[]);
 
   /**
    * 
