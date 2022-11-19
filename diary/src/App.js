@@ -4,6 +4,8 @@ import DiaryEditor from './DiaryEditor';
 import DiaryList from './DiaryList';
 
 const reducer = (state, action) =>{
+
+  // 리듀서 하나로 전체 수정할 수 있게 된다.
   switch(action.type){
     case 'INIT' :{
       return action.data;
@@ -17,9 +19,15 @@ const reducer = (state, action) =>{
       return [newItem, ...state]
     }
     case 'REMOVE':{
-      return state.filter((it)=>it.id !=== action.)
+      return state.filter((it)=>it.id !== action.targetId);
     }
-    case 'EDIT':
+    case 'EDIT':{
+      return state.map((it)=>
+        it.id === action.targetId?
+        // content를 돌려준다.
+        {...it,content:action.newContent}: it
+      );
+    }
     default :
     return state;
   }
@@ -29,6 +37,7 @@ const App = () => {
 
   // const [data, setData] = useState([]);
 
+  // 상태 변화를 위한 dispatch
   const [data, dispatch] =useReducer(reducer, []);
 
   const dataId = useRef(0);
@@ -64,6 +73,7 @@ const App = () => {
    */
   const onCreate = useCallback(
     (author, content, emotion) =>{
+      // dispatch 함수는 현재 코드를 자동으로 걸어준다.
       dispatch({type:'CREATE',data:{author, content, emotion, id : dataId.current}},)
       dataId.current +=1;
     },
@@ -75,10 +85,7 @@ const App = () => {
   },[]);
 
   const onEdit = useCallback((targetId, newContent) =>{
-    setData((data)=>
-      data.map((it)=>
-        it.id === targetId ? {...it, content:newContent}: it)
-    );
+    dispatch({type:"EDIT", targetId, newContent})
   },[]);
 
   /**
