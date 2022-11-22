@@ -2,6 +2,15 @@ import React, { useCallback, useEffect, useMemo, useReducer, useRef } from 'reac
 import './App.css';
 import DiaryEditor from './DiaryEditor';
 import DiaryList from './DiaryList';
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+
+import RouteTest from './components/RouteTest';
+
+import Home from "./pages/Home";
+import New from "./pages/New";
+import Edit from "./pages/Edit";
+import Diary from "./pages/Diary";
+
 
 const reducer = (state, action) =>{
 
@@ -110,14 +119,24 @@ const App = () => {
 
 
   return (
-    <div className="App">
-      <DiaryEditor onCreate={onCreate}/>
-      <div>전체 일기 : {data.length} </div>
-      <div>기분 좋은 일기 개수 : {goodCount} </div>
-      <div>기분 나쁜 일기 개수 : {badCount} </div>
-      <div>기분 좋은 일기 비율 : {goodRatio}</div>
-      <DiaryList onEdit={onEdit} onRemove={onRemove} diaryList={data}/>
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        {/* <DiaryEditor onCreate={onCreate}/>
+        <div>전체 일기 : {data.length} </div>
+        <div>기분 좋은 일기 개수 : {goodCount} </div>
+        <div>기분 나쁜 일기 개수 : {badCount} </div>
+        <div>기분 좋은 일기 비율 : {goodRatio}</div>
+        <DiaryList onEdit={onEdit} onRemove={onRemove} diaryList={data}/> */}
+        <Routes>
+          <Route path="/" element={<Home/>}/>
+          <Route path="/new" element={<New/>}/>
+          <Route path="/edit" element={<Edit/>}/>
+          <Route path="/diary" element={<Diary/>}/>
+        </Routes>
+        <RouteTest/>
+      </div>
+
+    </BrowserRouter>
   );
 }
 
