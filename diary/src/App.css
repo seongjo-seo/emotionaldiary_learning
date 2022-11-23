@@ -1,3 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap');
+
+.App{
+  font-family: "Yeon sung", cursive;
+  font-family: "Nanum pen Script", cursive;
+}
+
 .DiaryEditor {
   border : 1px solid gray;
   text-align: center;
