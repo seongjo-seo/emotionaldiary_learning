@@ -40,6 +40,10 @@ const reducer = (state, action) =>{
   }
 }
 
+export const DiaryStateContext = React.createContext();
+export const DiaryDispatchContext = React.createContext();
+
+
 const App = () => {
 
   // const [data, setData] = useState([]);
@@ -95,6 +99,10 @@ const App = () => {
     dispatch({type:"EDIT", targetId, newContent})
   },[]);
 
+  const memoizedDispatches = useMemo(()=>{
+    return {onCreate, onRemove, onEdit}
+  },[]);
+
   /**
    * 
    * 1. 좋은 일기를 분석한다. 좋은 일기의 기준은 3이상이 좋은 일기이다.
@@ -124,12 +132,21 @@ const App = () => {
 
   return (
     <BrowserRouter>
-    {/* <DiaryEditor onCreate={onCreate}/>
-    <div>전체 일기 : {data.length} </div>
-    <div>기분 좋은 일기 개수 : {goodCount} </div>
-    <div>기분 나쁜 일기 개수 : {badCount} </div>
-    <div>기분 좋은 일기 비율 : {goodRatio}</div>
-    <DiaryList onEdit={onEdit} onRemove={onRemove} diaryList={data}/> */}
+    {/* 
+    <DiaryStateContext.Provider value={data}>
+      <DiaryDispatchContext.Provider value={memoizedDispatches}>
+        <div className="App">
+          <DiaryEditor onCreate={onCreate}/>
+          <div>전체 일기 : {data.length} </div>
+          <div>기분 좋은 일기 개수 : {goodCount} </div>
+          <div>기분 나쁜 일기 개수 : {badCount} </div>
+          <div>기분 좋은 일기 비율 : {goodRatio}</div>
+          <DiaryList onEdit={onEdit} onRemove={onRemove} diaryList={data}/>
+        </div>
+      </DiaryDispatchContext.Provider>
+    </DiaryStateContext.Provider>
+     */}
+
       <div className="App">
         <h2>App.js</h2>
 

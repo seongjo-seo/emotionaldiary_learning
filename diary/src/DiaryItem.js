@@ -1,13 +1,10 @@
-import React, { useEffect, useState, useRef} from 'react';
+import React, { useEffect, useState, useRef, useContext} from 'react';
+import { DiaryDispatchContext } from './App';
 
 const DiaryItem = ({
-  onEdit,
-  onRemove, author, content, created_date, emotion, id}) =>{
+  author, content, created_date, emotion, id}) =>{
 
-    // 추가 됐을 때 값을 렌더하기 위함.
-    useEffect(()=>{
-      console.log(`${id}번 째 아이템 렌더!`)
-    })
+    const {onRemove, onEdit} = useContext(DiaryDispatchContext);
 
   const [isEdit, setIsEdit] = useState(false);
   const toggleIsEdit = () => setIsEdit(!isEdit);
