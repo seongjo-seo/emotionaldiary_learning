@@ -4,8 +4,6 @@ import DiaryEditor from './DiaryEditor';
 import DiaryList from './DiaryList';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 
-import RouteTest from './components/RouteTest';
-
 import Home from "./pages/Home";
 import New from "./pages/New";
 import Edit from "./pages/Edit";
@@ -117,23 +115,37 @@ const App = () => {
 
   const {goodCount, badCount, goodRatio} = getDiaryAnalysis;
 
+  /**
+   * 만약 img 태그에서 process env 태그가 정상적으로 이뤄지지 않는 경우.
+   * 다음 env 태그를 선언 후 초기화하여 사용한다.
+   */
+  const env = process.env;
+  env.PUBLIC_URL = env.PUBLIC_URL || "";
 
   return (
     <BrowserRouter>
+    {/* <DiaryEditor onCreate={onCreate}/>
+    <div>전체 일기 : {data.length} </div>
+    <div>기분 좋은 일기 개수 : {goodCount} </div>
+    <div>기분 나쁜 일기 개수 : {badCount} </div>
+    <div>기분 좋은 일기 비율 : {goodRatio}</div>
+    <DiaryList onEdit={onEdit} onRemove={onRemove} diaryList={data}/> */}
       <div className="App">
-        {/* <DiaryEditor onCreate={onCreate}/>
-        <div>전체 일기 : {data.length} </div>
-        <div>기분 좋은 일기 개수 : {goodCount} </div>
-        <div>기분 나쁜 일기 개수 : {badCount} </div>
-        <div>기분 좋은 일기 비율 : {goodRatio}</div>
-        <DiaryList onEdit={onEdit} onRemove={onRemove} diaryList={data}/> */}
+        <h2>App.js</h2>
+
+        {/* process.env.PUBLIC_URL은 폴더의 위치가 어디가 됐더라도 public 위치의 경로로 올라가는 것이다.  */}
+        <img src={process.env.PUBLIC_URL + `/assets/emotion1.png`}></img>
+        <img src={process.env.PUBLIC_URL + `/assets/emotion2.png`}></img>
+        <img src={process.env.PUBLIC_URL + `/assets/emotion3.png`}></img>
+        <img src={process.env.PUBLIC_URL + `/assets/emotion4.png`}></img>
+        <img src={process.env.PUBLIC_URL + `/assets/emotion5.png`}></img>
+
         <Routes>
           <Route path="/" element={<Home/>}/>
           <Route path="/new" element={<New/>}/>
           <Route path="/edit" element={<Edit/>}/>
           <Route path="/diary/:id" element={<Diary/>}/>
         </Routes>
-        <RouteTest/>
       </div>
 
     </BrowserRouter>
