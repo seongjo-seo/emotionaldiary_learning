@@ -8,39 +8,35 @@ import Home from "./pages/Home";
 import New from "./pages/New";
 import Edit from "./pages/Edit";
 import Diary from "./pages/Diary";
-import MyButton from './components/MyButton';
-import MyHeader from './components/MyHeader';
 
 
 const reducer = (state, action) =>{
+  let newState = [];
 
-  // 리듀서 하나로 전체 수정할 수 있게 된다.
+  // 리듀서 하나로 전체를 수정할 수 있게 된다.
   switch(action.type){
     case 'INIT' :{
       return action.data;
     }
     case 'CREATE':{
-      const created_data = new Date().getTime();
-      const newItem = {
-        ...action.data,
-        created_data
-      }
-      return [newItem, ...state]
+      newState = [action.data, ...state];
+      break;
     }
     case 'REMOVE':{
-      return state.filter((it)=>it.id !== action.targetId);
+      newState = state.filter((it)=>it.id !== action.targetId);
+      break;
     }
     case 'EDIT':{
-      return state.map((it)=>
-        it.id === action.targetId?
-        // content를 돌려준다.
-        {...it,content:action.newContent}: it
+      newState = state.map((it)=>
+        it.id === action.data.id ? {...action.data} : it
       );
+      break;
     }
     default :
-    return state;
+      return state;
   }
-}
+  return newState;
+};
 
 export const DiaryStateContext = React.createContext();
 export const DiaryDispatchContext = React.createContext();
@@ -48,12 +44,43 @@ export const DiaryDispatchContext = React.createContext();
 
 const App = () => {
 
-  // const [data, setData] = useState([]);
-
   // 상태 변화를 위한 dispatch
   const [data, dispatch] =useReducer(reducer, []);
 
   const dataId = useRef(0);
+  /** CREATE  */
+  const onCreate = (date, content, emotion) =>{
+    dispatch({
+      type:'CREATE',
+      data:{
+        id: dataId.current,
+        date: new Date(date).getTime(),
+        content,
+        emotion,
+      },
+    });
+    dataId.current += 1;
+  };
+  /** REMOVE */
+  
+  const onRemove = (targetId) =>{
+    dispatch({type:"REMOVE", targetId})
+  };
+
+  /** EDIT */
+  const onEdit = (targetId, date, content, emotion ) =>{
+    dispatch({
+      type:"EDIT",
+      data:{
+        id: targetId,
+        date: new Date(date).getTime(),
+        content,
+        emotion,
+      },
+    });
+  };
+
+
 
   /**
    * https://jsonplaceholder.typicode.com/comments을 통해서 API 값 호출하여 활용한다.
@@ -79,27 +106,6 @@ const App = () => {
   useEffect(()=>{
     getData();
   }, []);
-
-  /**
-   * 값 호출될 때 렌더링에 대한 최적화 개념
-   * 함수를 반환할 때 사용한다.
-   */
-  const onCreate = useCallback(
-    (author, content, emotion) =>{
-      // dispatch 함수는 현재 코드를 자동으로 걸어준다.
-      dispatch({type:'CREATE',data:{author, content, emotion, id : dataId.current}},)
-      dataId.current +=1;
-    },
-    []
-  );
-
-  const onRemove = useCallback((targetId) =>{
-    dispatch({type:"REMOVE", targetId})
-  },[]);
-
-  const onEdit = useCallback((targetId, newContent) =>{
-    dispatch({type:"EDIT", targetId, newContent})
-  },[]);
 
   const memoizedDispatches = useMemo(()=>{
     return {onCreate, onRemove, onEdit}
@@ -133,55 +139,27 @@ const App = () => {
   env.PUBLIC_URL = env.PUBLIC_URL || "";
 
   return (
-    <BrowserRouter>
-    {/* 
     <DiaryStateContext.Provider value={data}>
-      <DiaryDispatchContext.Provider value={memoizedDispatches}>
-        <div className="App">
-          <DiaryEditor onCreate={onCreate}/>
-          <div>전체 일기 : {data.length} </div>
-          <div>기분 좋은 일기 개수 : {goodCount} </div>
-          <div>기분 나쁜 일기 개수 : {badCount} </div>
-          <div>기분 좋은 일기 비율 : {goodRatio}</div>
-          <DiaryList onEdit={onEdit} onRemove={onRemove} diaryList={data}/>
-        </div>
-      </DiaryDispatchContext.Provider>
-    </DiaryStateContext.Provider>
-     */}
-
-      <div className="App">
-        <MyHeader
-          headText={"App"}
-          leftChild={
-            <MyButton text ={"왼쪽 버튼"} onClick={()=> alert("왼쪽 클릭")}/>
-          }
-          rightChild={
-            <MyButton
-              text={"오른쪽 버튼"}
-              onClick={()=>alert("오른쪽 클릭")}
-              />
-          }
-        />
-        <h2>App.js</h2>
-
-        <MyButton
-          text={"버튼"}
-          onClick={()=>alert("버튼 클릭")}
-          type={"positive"}
-        />
-
-        <MyButton
-          text={"버튼"}
-          onClick={()=>alert("버튼 클릭")}
-          type={"negative"}
-        />
-
-        <MyButton
-          text={"버튼"}
-          onClick={()=>alert("버튼 클릭")}
-        />
-
-
+      <DiaryDispatchContext.Provider
+      value={{
+        onCreate,
+        onEdit,
+        onRemove,
+      }}
+      >
+        <BrowserRouter>
+        {/* 
+            <div className="App">
+              <DiaryEditor onCreate={onCreate}/>
+              <div>전체 일기 : {data.length} </div>
+              <div>기분 좋은 일기 개수 : {goodCount} </div>
+              <div>기분 나쁜 일기 개수 : {badCount} </div>
+              <div>기분 좋은 일기 비율 : {goodRatio}</div>
+              <DiaryList onEdit={onEdit} onRemove={onRemove} diaryList={data}/>
+            </div>
+          </DiaryDispatchContext.Provider>
+        </DiaryStateContext.Provider>
+        */}
         {/* process.env.PUBLIC_URL은 폴더의 위치가 어디가 됐더라도 public 위치의 경로로 올라가는 것이다.  */}
         {/* <img src={process.env.PUBLIC_URL + `/assets/emotion1.png`}></img>
         <img src={process.env.PUBLIC_URL + `/assets/emotion2.png`}></img>
@@ -189,15 +167,17 @@ const App = () => {
         <img src={process.env.PUBLIC_URL + `/assets/emotion4.png`}></img>
         <img src={process.env.PUBLIC_URL + `/assets/emotion5.png`}></img> */}
 
-        <Routes>
-          <Route path="/" element={<Home/>}/>
-          <Route path="/new" element={<New/>}/>
-          <Route path="/edit" element={<Edit/>}/>
-          <Route path="/diary/:id" element={<Diary/>}/>
-        </Routes>
-      </div>
-
-    </BrowserRouter>
+          <div className="App">
+            <Routes>
+              <Route path="/" element={<Home/>}/>
+              <Route path="/new" element={<New/>}/>
+              <Route path="/edit" element={<Edit/>}/>
+              <Route path="/diary/:id" element={<Diary/>}/>
+            </Routes>
+          </div>
+        </BrowserRouter>
+      </DiaryDispatchContext.Provider>
+    </DiaryStateContext.Provider>
   );
 }
 
