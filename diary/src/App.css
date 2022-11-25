@@ -34,7 +34,74 @@ body{
 }
 
 
-.DiaryEditor {
+/* MyButton */
+.MyButton {
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  font-size: 18px;
+
+  white-space: nowrap;
+  font-family: "Nanum Pen Script";
+}
+
+.MyButton_default{
+  background-color: #ececec;
+  color : black;
+}
+
+.MyButton_positive{
+  background-color: #64c964;
+  color: white;
+}
+
+.MyButton_negative{
+  background-color: #fd565f;
+  color:white;
+}
+
+/* Header */
+
+header{
+  padding-top: 20px;
+  padding-bottom: 20px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+header > div{
+  display: flex;
+}
+
+header .head_text{
+  width: 50%;
+  font-size: 25px;
+  justify-content: center;
+}
+
+header .head_btn_left{
+  width : 25%;
+  justify-content: start;
+}
+
+header .head_btn_right{
+  width : 25%;
+  justify-content: end;
+}
+
+header button{
+  font-family: "Nanum Pen Script";
+}
+
+
+/* .DiaryEditor {
   border : 1px solid gray;
   text-align: center;
   padding: 20px;
@@ -61,11 +128,11 @@ textarea{
   width: 500px;
   padding : 10px;
   cursor: pointer;
-}
+} */
 
 
 /** List */
-.DiaryList{
+/* .DiaryList{
   border : 1px solid gray;
   padding : 20px;
   margin-top : 20px;
@@ -73,11 +140,11 @@ textarea{
 
 .DiaryList h2{
   text-align: center;
-}
+} */
 
 
 /** Item  */
-.DiaryItem {
+/* .DiaryItem {
   background-color:  rgb(240, 240, 240);
   margin-bottom : 10px;
   padding:20px;
@@ -98,4 +165,4 @@ textarea{
   font-weight: bold;
   margin-bottom: 30px;
   margin-top: 30px;
-}
+} */

@@ -8,6 +8,8 @@ import Home from "./pages/Home";
 import New from "./pages/New";
 import Edit from "./pages/Edit";
 import Diary from "./pages/Diary";
+import MyButton from './components/MyButton';
+import MyHeader from './components/MyHeader';
 
 
 const reducer = (state, action) =>{
@@ -148,14 +150,44 @@ const App = () => {
      */}
 
       <div className="App">
+        <MyHeader
+          headText={"App"}
+          leftChild={
+            <MyButton text ={"왼쪽 버튼"} onClick={()=> alert("왼쪽 클릭")}/>
+          }
+          rightChild={
+            <MyButton
+              text={"오른쪽 버튼"}
+              onClick={()=>alert("오른쪽 클릭")}
+              />
+          }
+        />
         <h2>App.js</h2>
 
+        <MyButton
+          text={"버튼"}
+          onClick={()=>alert("버튼 클릭")}
+          type={"positive"}
+        />
+
+        <MyButton
+          text={"버튼"}
+          onClick={()=>alert("버튼 클릭")}
+          type={"negative"}
+        />
+
+        <MyButton
+          text={"버튼"}
+          onClick={()=>alert("버튼 클릭")}
+        />
+
+
         {/* process.env.PUBLIC_URL은 폴더의 위치가 어디가 됐더라도 public 위치의 경로로 올라가는 것이다.  */}
-        <img src={process.env.PUBLIC_URL + `/assets/emotion1.png`}></img>
+        {/* <img src={process.env.PUBLIC_URL + `/assets/emotion1.png`}></img>
         <img src={process.env.PUBLIC_URL + `/assets/emotion2.png`}></img>
         <img src={process.env.PUBLIC_URL + `/assets/emotion3.png`}></img>
         <img src={process.env.PUBLIC_URL + `/assets/emotion4.png`}></img>
-        <img src={process.env.PUBLIC_URL + `/assets/emotion5.png`}></img>
+        <img src={process.env.PUBLIC_URL + `/assets/emotion5.png`}></img> */}
 
         <Routes>
           <Route path="/" element={<Home/>}/>
