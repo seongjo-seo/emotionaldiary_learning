@@ -185,3 +185,11 @@ header button{
   font-size: 25px;
   margin-bottom: 5px;
 }
+
+.DiaryItem .diary_content_preview{
+  font-size: 18px;
+}
+
+.DiaryItem .btn_wrappter{
+  min-width: 70px;
+}

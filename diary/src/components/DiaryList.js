@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import DiaryItem from "./DiaryItem";
 import MyButton from "./MyButton";
+import DiaryItem from "./DiaryItem";
 
 const sortOptionList = [
   {value : "lastest", name:"최신순"},
