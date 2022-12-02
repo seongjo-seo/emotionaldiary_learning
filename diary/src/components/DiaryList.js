@@ -4,7 +4,7 @@ import MyButton from "./MyButton";
 import DiaryItem from "./DiaryItem";
 
 const sortOptionList = [
-  {value : "lastest", name:"최신순"},
+  {value : "latest", name:"최신순"},
   {value : "oldest", name:"오래된 순"},
 ];
 
@@ -49,7 +49,7 @@ const DiaryList = ({diaryList})=>{
 
 
     const compare = (a, b)=>{
-      if (sortType ==='lastest'){
+      if (sortType ==='latest'){
         return parseInt(b.date) - parseInt(a.date);
       }
       else{
