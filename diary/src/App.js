@@ -25,8 +25,7 @@ const reducer = (state, action) =>{
       break;
     }
     case 'EDIT':{
-      newState = state.map((it)=>
-        it.id === action.data.id ? {...action.data} : it
+        newState = state.map( (it) => it.id === action.targetId ? {...action.data} : it
       );
       break;
     }
@@ -75,7 +74,7 @@ const dummyData = [
 
 const App = () => {
   // 상태 변화를 위한 dispatch
-  const [data, dispatch] =useReducer(reducer, dummyData);
+  const [data, dispatch] = useReducer(reducer, dummyData);
 
   const dataId = useRef(0);
   /** CREATE  */
