@@ -25,58 +25,28 @@ const reducer = (state, action) =>{
       break;
     }
     case 'EDIT':{
-        newState = state.map( (it) => it.id === action.targetId ? {...action.data} : it
+        newState = state.map((it) =>
+        it.id === action.data.Id ? {...action.data} : it
       );
       break;
     }
     default :
       return state;
   }
+
+  localStorage.setItem("diary", JSON.stringify(newState))
   return newState;
 };
 
 export const DiaryStateContext = React.createContext();
 export const DiaryDispatchContext = React.createContext();
 
-const dummyData = [
-  {
-    id:1,
-    emotion:1,
-    content: "오늘의일기 1번",
-    date : 1669973608411,
-  },
-  {
-    id:2,
-    emotion:2,
-    content: "오늘의일기 2번",
-    date : 1669973608412,
-  },
-  {
-    id:3,
-    emotion:3,
-    content: "오늘의일기 3번",
-    date : 1669973608413,
-  },
-  {
-    id:4,
-    emotion:4,
-    content: "오늘의일기 4번",
-    date : 1669973608414,
-  },
-  {
-    id:5,
-    emotion:5,
-    content: "오늘의일기 5번",
-    date : 1669973608415,
-  }
-];
-
 
 const App = () => {
   // 상태 변화를 위한 dispatch
-  const [data, dispatch] = useReducer(reducer, dummyData);
+  const [data, dispatch] = useReducer(reducer, []);
 
-  const dataId = useRef(0);
+  const dataId = useRef(6);
   /** CREATE  */
   const onCreate = (date, content, emotion) =>{
     dispatch({
