@@ -1,4 +1,4 @@
-import React, { useReducer, useRef } from 'react';
+import React, { useEffect, useReducer, useRef } from 'react';
 import './App.css';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 
@@ -45,6 +45,19 @@ export const DiaryDispatchContext = React.createContext();
 const App = () => {
   // 상태 변화를 위한 dispatch
   const [data, dispatch] = useReducer(reducer, []);
+
+  useEffect(()=>{
+    const localData = localStorage.getItem("diary");
+    if(localData){
+      const diaryList = JSON.parse(localData);
+      dataId.current = parseInt(diaryList[0].id)+1;
+
+      console.log(diaryList);
+      console.log(dataId);
+
+      dispatch({type:"INIT", data:diaryList});
+    }
+  }, []);
 
   const dataId = useRef(6);
   /** CREATE  */
